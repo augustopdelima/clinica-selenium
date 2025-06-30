@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agendamento de Consulta</title>
+</head>
+<body>
+    <h2>Agende sua Consulta</h2>
+    <form onsubmit="event.preventDefault(); agendar();">
+        <label for="paciente">Paciente:</label>
+        <input type="text" id="paciente" /><br><br>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" /><br><br>
+
+        <label for="datahora">Data e Hora:</label>
+        <input type="datetime-local" id="datahora" /><br><br>
+
+        <button type="submit">Agendar</button>
+    </form>
+
+    <p id="mensagem"></p>
+
+    <script>
+        function agendar() {
+            const nome = document.getElementById("paciente").value;
+            const cpf = document.getElementById("cpf").value;
+            const dataHora = document.getElementById("datahora").value;
+
+            const params = new URLSearchParams({
+                paciente: nome,
+                cpf: cpf,
+                dataHora: dataHora
+            });
+
+            fetch("/consultas?" + params.toString(), {
+                method: "POST"
+            })
+            .then(res => res.text())
+            .then(msg => document.getElementById("mensagem").textContent = msg);
+        }
+    </script>
+
+</body>
+</html>
